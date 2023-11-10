@@ -28,7 +28,7 @@ public class User {
     private String surname;
     private String email;
     private String password;
-
+    private String avatar;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Device> devices = new ArrayList<>();
