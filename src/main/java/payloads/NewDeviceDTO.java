@@ -1,5 +1,4 @@
 package payloads;
-
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -11,8 +10,6 @@ public record NewDeviceDTO(
         String name,
         StatoDispositivo stato,
         @NotNull(message = "Id è obbligatorio")
-        long userID
+        long userID) {
 
-
-) {
 }

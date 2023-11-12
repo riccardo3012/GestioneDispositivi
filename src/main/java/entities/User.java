@@ -1,10 +1,7 @@
 package entities;
-
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,11 +17,12 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue
+    @Column(name = "user_id")
     private long id;
     private String username;
-    @Column
+    @Column(name = "name")
     private String name;
-    @Column
+    @Column(name = "surname")
     private String surname;
     private String email;
     private String password;

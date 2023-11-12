@@ -1,9 +1,8 @@
 package repositories;
-
-import entities.User;
+import entities.Device;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface DeviceRepository extends JpaRepository<User, Long> {
+public interface DeviceRepository extends JpaRepository<Device, Long> {
 }
 
 

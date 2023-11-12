@@ -11,6 +11,7 @@ import service.UserService;
 import payloads.NewUserDTO;
 import java.io.IOException;
 
+
 @RestController
 @RequestMapping ("/user")
 public class UserController {
@@ -18,9 +19,28 @@ public class UserController {
         @Autowired
         private UserService userService;
 
+
+    @GetMapping("/{id}")
+    User findUserById(@PathVariable long id) {
+        return userService.findUserById(id);
+    }
+
+
     @GetMapping
     Page<User> getAllUsers(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "2") int size) {
         return userService.getAllUsers(page, size);
+    }
+
+
+    @PutMapping("/{id}")
+    User findUserByIdAndUpdate(@PathVariable long id, @RequestBody User user) {
+        return userService.findUserByIdAndUpdate(id, user);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    void findUserByIdAndDelete(@PathVariable long id) {
+        userService.findUserByIdAndDelete(id);
     }
 
     @PostMapping
@@ -36,22 +56,4 @@ public class UserController {
             }
         }
     }
-
-    @GetMapping("/{id}")
-    User findUserById(@PathVariable long id) {
-        return userService.findUserById(id);
-    }
-
-    @PutMapping("/{id}")
-    User findUserByIdAndUpdate(@PathVariable long id, @RequestBody User user) {
-        return userService.findUserByIdAndUpdate(id, user);
-    }
-
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    void findUserByIdAndDelete(@PathVariable long id) {
-        userService.findUserByIdAndDelete(id);
-    }
-
-
 }
