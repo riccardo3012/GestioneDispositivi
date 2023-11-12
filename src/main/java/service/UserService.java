@@ -1,4 +1,6 @@
 package service;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import entities.User;
 import exception.BadRequestException;
 import exception.NotFoundException;
@@ -7,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import repositories.UserRepository;
 import payloads.NewUserDTO;
 import java.io.IOException;
@@ -15,7 +18,8 @@ import java.io.IOException;
 public class UserService {
 @Autowired
     private UserRepository userRepository;
-
+    @Autowired
+    private Cloudinary cloudinary;
 
     public User findUserById(long id) {
         return userRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
@@ -58,4 +62,12 @@ public class UserService {
         return (UserRepository) userRepository.save(newUser); //<---- da rivedere
     }
 
+
+    public User uploadImg(MultipartFile file, long id) throws IOException {
+        User foundUser = this.findUserById(id);
+        String cloudUrl = (String) cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap()).get("url");
+        foundUser.setAvatar(cloudUrl);
+        return userRepository.save(foundUser);
+    }
 }
+

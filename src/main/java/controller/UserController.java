@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import service.UserService;
 import payloads.NewUserDTO;
 import java.io.IOException;
@@ -55,5 +56,11 @@ public class UserController {
                 throw new RuntimeException();
             }
         }
+    }
+
+    @PatchMapping("upload/avatar/{id}")
+    User uploadImg(@RequestParam("avatar") MultipartFile body, @PathVariable long id) throws IOException {
+        System.out.println(body.getOriginalFilename());
+        return userService.uploadImg(body, id);
     }
 }

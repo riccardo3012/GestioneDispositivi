@@ -12,14 +12,14 @@ import repositories.DeviceRepository;
 import utils.StatoDispositivo;
 import utils.TipoDispositivo;
 import java.io.IOException;
-import service.UserService;
+
 
 @Service
 public class DeviceService {
     @Autowired
     private DeviceRepository deviceRepository;
     @Autowired
-    private User user;
+    private UserService userService;
 
 
     public Device findDeviceById(long id) {
@@ -32,7 +32,7 @@ public class DeviceService {
     }
 
     public Device findDeviceByIdAndUpdate(long id, NewDeviceDTO deviceDTO) {
-        User foundUser = UserService.findUserById(deviceDTO.userID());
+        User foundUser = userService.findUserById(deviceDTO.userID());
         Device foundDevice = this.findDeviceById(id);
         foundDevice.setTipoDispositivo(TipoDispositivo.valueOf(deviceDTO.name()));
         foundDevice.setStatoDispositovo(deviceDTO.stato());
@@ -46,15 +46,17 @@ public class DeviceService {
     }
 
     public Device save(NewDeviceDTO body) throws IOException {
-        User user = UserService.findUserById(body.userID());
+        User user = userService.findUserById(body.userID());
         Device device = new Device();
         device.setTipoDispositivo(TipoDispositivo.valueOf(body.name()));
         device.setStatoDispositovo(body.stato());
+
         if (device.getStatoDispositovo() == StatoDispositivo.ASSEGNATO) {
             device.setUser(user);
         } else {
             device.setUser(null);
         }
+
         return deviceRepository.save(device);
        }
     }
