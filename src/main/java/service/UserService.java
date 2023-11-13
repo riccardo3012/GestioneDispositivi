@@ -19,7 +19,7 @@ public class UserService {
 @Autowired
     private UserRepository userRepository;
     @Autowired
-    private Cloudinary cloudinary;
+ //   private Cloudinary cloudinary;
 
     public User findUserById(long id) {
         return userRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
@@ -63,11 +63,15 @@ public class UserService {
     }
 
 
-    public User uploadImg(MultipartFile file, long id) throws IOException {
+  /*  public User uploadImg(MultipartFile file, long id) throws IOException {
         User foundUser = this.findUserById(id);
         String cloudUrl = (String) cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap()).get("url");
         foundUser.setAvatar(cloudUrl);
         return userRepository.save(foundUser);
+    }*/
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new NotFoundException("User con mail " + email + " non trovato!"));
     }
 }
 
