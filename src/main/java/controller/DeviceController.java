@@ -11,7 +11,8 @@ import payloads.NewDeviceDTO;
 import service.DeviceService;
 import java.io.IOException;
 
-
+@RestController
+@RequestMapping("/devices")
 public class DeviceController {
     @Autowired
     private DeviceService deviceService;

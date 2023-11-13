@@ -1,13 +1,10 @@
 package security;
-
-
 import entities.User;
 import exception.UnauthorizedException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import lombok.Value;
 import org.springframework.stereotype.Component;
-
+import org.springframework.beans.factory.annotation.Value;
 import java.util.Date;
 
 @Component
@@ -16,7 +13,7 @@ public class JWTTools {
     private String secret;
 
     public String createToken(User user) {
-        return Jwts.builder().setSubject(String.valueOf(user.findUserById()))
+        return Jwts.builder().setSubject(String.valueOf(user.getId()))
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 3))
                 .signWith(Keys.hmacShaKeyFor(secret.getBytes())).compact();

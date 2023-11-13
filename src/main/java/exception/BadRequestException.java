@@ -10,7 +10,8 @@ public class BadRequestException extends RuntimeException{
 
      }
     public BadRequestException(List<ObjectError> error){
-         this.errorList = error;
+        super("Presente bug nel body");
+        this.errorList = error;
 
     }
 }

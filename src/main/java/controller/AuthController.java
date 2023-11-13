@@ -1,5 +1,4 @@
 package controller;
-
 import entities.User;
 import exception.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +13,10 @@ import payloads.NewUserDTO;
 import payloads.UserLoginDTO;
 import service.AuthService;
 import service.UserService;
-
 import java.io.IOException;
 
-public class AuthController {
 
+public class AuthController {
 
     @Autowired
     private UserService userService;
@@ -39,13 +37,12 @@ public class AuthController {
             throw new BadRequestException(validation.getAllErrors());
         } else {
             try {
-                return userService.saveUser(userDTO);
+                return (User) userService.saveUser(userDTO);
             } catch (IOException e) {
                 throw new RuntimeException();
             }
         }
     }
-
 }
 
-}
+

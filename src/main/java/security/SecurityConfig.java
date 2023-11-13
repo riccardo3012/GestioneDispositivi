@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @EnableWebSecurity
 public class SecurityConfig {
     @Autowired
-
+    private AuthFilter authFilter;
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -20,7 +20,7 @@ public class SecurityConfig {
         http.csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable());
         http.formLogin(login -> login.disable());
         http.authorizeHttpRequests(request -> request.requestMatchers("/**").permitAll());
-        http.addFilterBefore(AuthFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 }
