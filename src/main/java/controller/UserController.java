@@ -4,6 +4,9 @@ import entities.User;
 import exception.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +31,7 @@ public class UserController {
 
 
     @GetMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     Page<User> getAllUsers(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "2") int size) {
         return userService.getAllUsers(page, size);
     }
@@ -62,5 +66,21 @@ public class UserController {
     User uploadImg(@RequestParam("avatar") MultipartFile body, @PathVariable long id) throws IOException {
         System.out.println(body.getOriginalFilename());
         return userService.uploadImg(body, id);
+    }
+
+    @GetMapping("/me")
+    public UserDetails getLoggedProfile(@AuthenticationPrincipal UserDetails loggedUser) {
+        return loggedUser;
+    }
+
+    @PutMapping("/me")
+    public UserDetails updateLoggedProfile(@AuthenticationPrincipal User loggedUser, @RequestBody User user) {
+        return userService.findUserByIdAndUpdate(loggedUser.getId(), user);
+    }
+
+    @DeleteMapping("/me")//  204
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void getProfile(@AuthenticationPrincipal User loggedUser) {
+        userService.findUserByIdAndDelete(loggedUser.getId());
     }
 }

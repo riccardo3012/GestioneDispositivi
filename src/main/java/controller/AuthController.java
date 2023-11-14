@@ -5,9 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 import payloads.LoginSeccessfullDTO;
 import payloads.NewUserDTO;
 import payloads.UserLoginDTO;
@@ -15,7 +13,8 @@ import service.AuthService;
 import service.UserService;
 import java.io.IOException;
 
-
+@RestController
+@RequestMapping("/auth")
 public class AuthController {
 
     @Autowired
@@ -42,6 +41,10 @@ public class AuthController {
                 throw new RuntimeException();
             }
         }
+    }
+    @PatchMapping("/update/role/{id}")
+    public User findByIdAndUpdateRole(@PathVariable long id) {
+        return userService.UpdateRoleById(id);
     }
 }
 

@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import repositories.UserRepository;
 import payloads.NewUserDTO;
+import utils.Role;
+
 import java.io.IOException;
 
 @Service
@@ -75,6 +77,13 @@ public class UserService {
       return userRepository.findByEmail(email)
               .orElseThrow(() -> new NotFoundException("User con mail " + email + " non trovato!"));
   }
+
+
+    public User UpdateRoleById(long id) {
+        User foundUser = this.findUserById(id);
+        foundUser.setRole(Role.USER);
+        return userRepository.save(foundUser);
+    }
     }
 
 

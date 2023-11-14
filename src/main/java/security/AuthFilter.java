@@ -39,8 +39,8 @@ public class AuthFilter extends OncePerRequestFilter {
             // 3. Devo cercare l'user nel database
             String id = jwtTools.idFromToken(token);
             User foundUser = userService.findUserById(Integer.parseInt(id));
-            // 4. Autorizziamo  l'user a
-            Authentication authentication = new UsernamePasswordAuthenticationToken(foundUser, null);
+            // 4. Autorizziamo  l'user (user autenticato)                                                      //rappresenta i ruoli dell utente permettendo a spring di abilitare i ruoli
+            Authentication authentication = new UsernamePasswordAuthenticationToken(foundUser, null, foundUser.getAuthorities());//credeziali utente per maggiori dati
             SecurityContextHolder.getContext().setAuthentication(authentication);
             filterChain.doFilter(request, response);
         }
@@ -51,3 +51,4 @@ public class AuthFilter extends OncePerRequestFilter {
         return new AntPathMatcher().match("/auth/**", request.getServletPath());
    }
 }
+//il filtro verifa la presenza e "spacchetta" autorizzation header per estrarre il token
